@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานข้อมูลนักศึกษาระดับอุดมศึกษาด้วย Chart.js</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Sarabun', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            color: #1e3a8a;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            font-size: 1.1rem;
+            color: #1f2937;
+            margin-top: 0;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 8px;
+        }
+        .chart-box {
+            position: relative;
+            height: 350px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .text-right {
+            text-align: right;
+        }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📊 รายงานสรุปข้อมูลนักศึกษาระดับอุดมศึกษา (ปีการศึกษา 2568)</h1>
+        <p>นำเสนอข้อมูลด้วยตารางและแผนภูมิโต้ตอบ (Interactive Charts) โดย Chart.js</p>
+    </div>
+
+    <div class="grid-container">
+
+        <!-- ชุดข้อมูลที่ 1 -->
+        <div class="card">
+            <h2>1. จำนวนนักศึกษาจำแนกตามประเภทสถาบันอุดมศึกษา</h2>
+            <div class="chart-box">
+                <canvas id="typeChart"></canvas>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ประเภทสถาบันอุดมศึกษา</th>
+                        <th class="text-right">จำนวนนักศึกษา (คน)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>มหาวิทยาลัยรัฐในกำกับ</td><td class="text-right">611,277</td></tr>
+                    <tr><td>2</td><td>มหาวิทยาลัยรัฐไม่จำกัดรับ</td><td class="text-right">326,309</td></tr>
+                    <tr><td>3</td><td>มหาวิทยาลัยเอกชน</td><td class="text-right">299,605</td></tr>
+                    <tr><td>4</td><td>มหาวิทยาลัยราชภัฎ</td><td class="text-right">293,092</td></tr>
+                    <tr><td>5</td><td>มหาวิทยาลัยเทคโนโลยีราชมงคล</td><td class="text-right">105,832</td></tr>
+                    <tr><td>6</td><td>มหาวิทยาลัยรัฐจำกัดรับ</td><td class="text-right">88,438</td></tr>
+                    <tr><td>7</td><td>สถาบันเอกชน</td><td class="text-right">22,998</td></tr>
+                    <tr><td>8</td><td>วิทยาลัยเอกชน</td><td class="text-right">19,643</td></tr>
+                    <tr><td>9</td><td>สถานศึกษานอกสังกัดฯ</td><td class="text-right">19,559</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ชุดข้อมูลที่ 2 -->
+        <div class="card">
+            <h2>2. จำนวนนักศึกษาจำแนกตามระดับการศึกษา</h2>
+            <div class="chart-box">
+                <canvas id="levelChart"></canvas>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ระดับการศึกษา</th>
+                        <th class="text-right">จำนวนนักศึกษา (คน)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>ป.ตรี</td><td class="text-right">1,623,464</td></tr>
+                    <tr><td>2</td><td>ป.โท</td><td class="text-right">112,417</td></tr>
+                    <tr><td>3</td><td>ป.เอก</td><td class="text-right">31,268</td></tr>
+                    <tr><td>4</td><td>ป.บัณฑิต</td><td class="text-right">7,531</td></tr>
+                    <tr><td>5</td><td>ปวช.</td><td class="text-right">4,750</td></tr>
+                    <tr><td>6</td><td>ปวส.</td><td class="text-right">4,328</td></tr>
+                    <tr><td>7</td><td>ป.บัณฑิตชั้นสูง</td><td class="text-right">2,385</td></tr>
+                    <tr><td>8</td><td>ประกาศนียบัตร</td><td class="text-right">498</td></tr>
+                    <tr><td>9</td><td>อนุปริญญา</td><td class="text-right">112</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // --- กราฟที่ 1: Bar Chart (แนวนอน) ---
+        const ctxType = document.getElementById('typeChart').getContext('2d');
+        new Chart(ctxType, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'มหาวิทยาลัยรัฐในกำกับ',
+                    'มหาวิทยาลัยรัฐไม่จำกัดรับ',
+                    'มหาวิทยาลัยเอกชน',
+                    'มหาวิทยาลัยราชภัฎ',
+                    'มหาวิทยาลัยเทคโนโลยีราชมงคล',
+                    'มหาวิทยาลัยรัฐจำกัดรับ',
+                    'สถาบันเอกชน',
+                    'วิทยาลัยเอกชน',
+                    'สถานศึกษานอกสังกัดฯ'
+                ],
+                datasets: [{
+                    label: 'จำนวนนักศึกษา (คน)',
+                    data: [611277, 326309, 299605, 293092, 105832, 88438, 22998, 19643, 19559],
+                    backgroundColor: [
+                        '#3b82f6', '#ef4444', '#f59e0b', '#10b981', 
+                        '#8b5cf6', '#f97316', '#6b7280', '#84cc16', '#06b6d4'
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ' จำนวน: ' + context.raw.toLocaleString() + ' คน';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000) + 'k';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- กราฟที่ 2: Pie / Doughnut Chart ---
+        const ctxLevel = document.getElementById('levelChart').getContext('2d');
+        new Chart(ctxLevel, {
+            type: 'doughnut',
+            data: {
+                labels: ['ป.ตรี', 'ป.โท', 'ป.เอก', 'ป.บัณฑิต', 'ปวช.', 'ปวส.', 'ป.บัณฑิตชั้นสูง', 'ประกาศนียบัตร', 'อนุปริญญา'],
+                datasets: [{
+                    data: [1623464, 112417, 31268, 7531, 4750, 4328, 2385, 498, 112],
+                    backgroundColor: [
+                        '#10b981', '#3b82f6', '#f59e0b', '#ef4444', 
+                        '#8b5cf6', '#f97316', '#a855f7', '#64748b', '#14b8a6'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                let value = context.raw;
+                                let percentage = ((value / total) * 100).toFixed(2);
+                                return ` ${context.label}: ${value.toLocaleString()} คน (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
